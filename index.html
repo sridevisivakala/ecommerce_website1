@@ -1,239 +1,348 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>SHOPKARO AI - Shop Smarter</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
-  <!-- Animate.css for animations -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShopEasy - E-Commerce</title>
   <style>
-    
-    body { background: #f8fafa; }
-    
-    /* Example AI Pulse animation */
-    .pulse {
-      animation: pulse-animation 2s infinite;
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      color: #333;
     }
-    @keyframes pulse-animation {
-      0% { box-shadow: 0 0 0 0 rgba(44, 196, 243, 0.7);}
-      70% { box-shadow: 0 0 0 10px rgba(44, 196, 243, 0);}
-      100% { box-shadow: 0 0 0 0 rgba(44, 196, 243, 0);}
+    header {
+      background: #222;
+      color: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: #ff6600;
+    }
+    header nav button {
+      margin-left: 10px;
+      background: #ff6600;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    header nav button:hover {
+      background: #e65c00;
+    }
+    .container { padding: 1rem 2rem; }
+    
+    /* Categories */
+    .categories {
+      margin: 1rem 0;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .categories button {
+      background: #eee;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+    .categories button.active, .categories button:hover {
+      background: #ff6600;
+      color: #fff;
+      border: none;
+    }
+
+    /* Products */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: 1rem;
+    }
+    .product {
+      background: #fff;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .product:hover { transform: translateY(-5px); }
+    .product img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .product h3 { margin: 0.5rem 0; font-size: 1rem; }
+    .product p { font-weight: bold; color: #444; }
+    .product button {
+      margin-top: 5px;
+      width: 100%;
+      background: #222;
+      color: #fff;
+      border: none;
+      padding: 0.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .product button:hover { background: #444; }
+
+    /* Cart Drawer */
+    #cartDrawer {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 350px;
+      height: 100%;
+      background: #fff;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+      transition: 0.3s;
+      padding: 1rem;
+      overflow-y: auto;
+      z-index: 20;
+    }
+    #cartDrawer.open { right: 0; }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.5rem;
+    }
+    .cart-item button { padding: 0.2rem 0.5rem; margin-left: 5px; }
+    #checkoutBtn {
+      margin-top: 1rem;
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      background: #ff6600;
+      color: #fff;
+      cursor: pointer;
+    }
+    #checkoutBtn:hover { background: #e65c00; }
+
+    /* Auth Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 30;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      width: 300px;
+      position: relative;
+      text-align: center;
+    }
+    .modal-content h2 { margin-top: 0; color: #ff6600; }
+    .close {
+      position: absolute;
+      top: 10px; right: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
-  <!-- Main AI Branding Section -->
-   
-    <section class="ai-highlight py-5 text-center">
-        <div class="container">
-         <div class="ai-background" style="background-image: url('https://res.cloudinary.com/dtmfkejem/image/upload/v1755287551/720e25b50ddab5711e8043f8c804d6b8_xjew8e.jpg'); background-size: cover; background-position: center; position: absolute; top: 0; left: 0; width: 100%; height: 70%; opacity: 6;"></div>
-        <div class="ai-content text-white position-relative" style="z-index: 1;">
-    
-  <section class="header_menu mt-1 animate__animated animate__fadeIn">
-    <div class="container-fluid px-0 shadow">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light py-3">
-        <a class="navbar-brand pl-5" href="#"><img src="assets/images/logo.png" class="img img-fluid" width="120px" alt="logo"></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mx-auto">
-            <li class="nav-item active"><a class="nav-link" href="#">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Product</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Category</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Settings</a>
-                <a class="dropdown-item" href="#">Profile</a>
-              </div>
-            </li>
-          </ul>
-          <div class="search mr-3"><a href="#" class="btn btn-sm btn-outline-primary">Search</a></div>
-          <div class="cart pulse">
-            <a href="#"><i class="fas fa-shopping-cart fa-2x"></i><span class="badge badge-pill badge-primary">24</span></a>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </section>
-  <section class="hero text-center py-5">
+  <header>
+    <h1>ShopEasy</h1>
+    <nav>
+      <span id="userDisplay"></span>
+      <button id="authBtn" class="auth">Sign In / Sign Up</button>
+      <button onclick="toggleCart()">🛒 Cart</button>
+    </nav>
+  </header>
 
-     <h1 class="animate__animated animate__fadeInDown">Welcome to ShopKaro AI</h1>
-        <h4 class="animate__animated animate__fadeInUp">Your AI-Powered Shopping Experience</h4>
-        <p class="animate__animated animate__fadeInUp">Discover smarter shopping with personalized  recommendations, price alerts, and more!</p>
-        <button class="btn btn-primary btn-lg animate__animated animate__fadeInUp">
-          <i class="fas fa-robot"></i> Explore AI Features
-        </button>
-        <button class="btn btn-dark btn-lg animate__animated animate__bounceIn">Try AI Features</button>
-        </div>
-  </section>
-
-  <!-- Animated Carousel Section -->
-  <section class="header_carousel animate__animated animate__jackInTheBox">
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active"><img class="d-block w-100" src="assets/images/photo-1506645292803-579c17d4ba6a.jfif" alt="First slide"></div>
-        <div class="carousel-item"><img class="d-block w-100" src="assets/images/photo-1553830591-d8632a99e6ff.jfif" alt="Second slide"></div>
-        <div class="carousel-item"><img class="d-block w-100" src="assets/images/photo-1554774853-7f03caeb4b15.jfif" alt="Third slide"></div>
-      </div>
-      <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span><span class="sr-only">Next</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- Shop By Category Section with Animation -->
-  <section class="shop_by_category py-5 my-5 animate__animated animate__lightSpeedInLeft">
-    <div class="container-fluid">
-      <div class="section_title text-center mb-5">
-        <h2 class="text-capitalize">Shop By Category</h2>
-      </div>
-      <div class="row">
-        <div class="col-md-4 col-12">
-          <div class="card bg-dark text-white animate__animated animate__zoomIn"><a href="#"><img class="card-img img img-fluid" src="assets/images/category1.jfif" alt="Category 1"></a></div>
-        </div>
-        <div class="col-md-4 col-12 mt-small-5 mb-small-5">
-          <div class="card bg-dark text-white animate__animated animate__zoomIn"><a href="#"><img class="card-img img img-fluid" src="assets/images/category2.jfif" alt="Category 2"></a></div>
-        </div>
-        <div class="col-md-4 col-12">
-          <div class="card bg-dark text-white animate__animated animate__zoomIn"><a href="#"><img class="card-img img img-fluid" src="assets/images/category3.jfif" alt="Category 3"></a></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- AI Powered Features Section -->
-  <section class="products py-5 my-5 animate__animated animate__fadeInUp">
-    <div class="container">
-      <div class="section_title text-center mb-5">
-        <h2 class="text-capitalize">Our AI Features</h2>
-        <p>Product recommendations, price alerts, smart AI filters – try it now!</p>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="single_product shadow text-center p-3 animate__animated animate__fadeInLeft">
-            <i class="fas fa-robot fa-3x text-info mb-2"></i>
-            <h5>Smart Recommendations</h5>
-            <p>AI suggests products you'll LOVE based on your preferences.</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="single_product shadow text-center p-3 animate__animated animate__fadeInUp">
-            <i class="fas fa-bell fa-3x text-warning mb-2"></i>
-            <h5>Price Alerts</h5>
-            <p>Get notified when your favorite items drop in price!</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="single_product shadow text-center p-3 animate__animated animate__fadeInRight">
-            <i class="fas fa-magic fa-3x text-success mb-2"></i>
-            <h5>Personalized Filters</h5>
-            <p>AI helps you find just the right style and size.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features Section with Animation -->
-  <section class="feature py-5 mt-5 animate__animated animate__fadeIn">
-    <div class="container">
-      <div class="section_title text-center mb-5">
-        <h2 class="text-capitalize">Site Features</h2>
-      </div>
-      <div class="row text-white">
-        <div class="col-md-4 col-12 shadow p-3 text-center animate__animated animate__fadeInDown">
-          <i class="fas fa-shipping-fast fa-3x mb-3 pt-2"></i>
-          <h3>Free Shipping Method</h3>
-          <p>Get fast and free delivery on all orders!</p>
-        </div>
-        <div class="col-md-4 col-12 shadow p-3 mt-small-5 mb-small-5 text-center animate__animated animate__fadeInDown">
-          <i class="fas fa-lock fa-3x mb-3 pt-2"></i>
-          <h3>Secure Payment System</h3>
-          <p>We keep your payments and information safe.</p>
-        </div>
-        <div class="col-md-4 col-12 shadow p-3 text-center animate__animated animate__fadeInDown">
-          <i class="fas fa-headphones fa-3x mb-3 pt-2"></i>
-          <h3>24/7 Support</h3>
-          <p>Our AI-powered support team is here for you anytime.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer with Animation -->
-  <section class="footer_section pt-5 pb-2 animate__animated animate__fadeInUp">
-    <footer>
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-3 col-6 pl-5">
-            <div class="footer_title">
-              <a href="#"><img src="assets/images/logo.png" width="150px" class="img img-fluid" alt="logo"></a>
-            </div>
-            <div>AI powered shopping for everyone. Enjoy smart, secure, and personalized experiences.</div>
-          </div>
-          <div class="col-md-3 col-6">
-            <div class="footer_title pt-3 mb-3"><h3>Quick Links</h3></div>
-            <div class="footer_links">
-              <ul>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Offers & Discounts</a></li>
-                <li><a href="#">Get Coupon</a></li>
-                <li><a href="#">Contact Us</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md-3 col-6">
-            <div class="footer_title pt-3 mb-3"><h3>New Products</h3></div>
-            <div class="footer_links">
-              <ul>
-                <li><a href="#">Woman Cloth</a></li>
-                <li><a href="#">Fashion Accessories</a></li>
-                <li><a href="#">Man Accessories</a></li>
-                <li><a href="#">Rubber made Toys</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md-3 col-6">
-            <div class="footer_title pt-3 mb-3"><h3>Support</h3></div>
-            <div class="footer_links">
-              <ul>
-                <li><a href="#">FAQ</a></li>
-                <li><a href="#">Terms & Conditions</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Report a Payment Issue</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="border-top">
-        <h6 class="text-center mt-3">Copyright ©2025 All rights reserved</h6>
-      </div>
-    </footer>
-  </section>
-
-  <div class="backtop">
-    <a id="button" href="#top" class="btn btn-lg btn-outline-danger" role="button">
-      <i class="fas fa-chevron-up text-dark"></i>
-    </a>
+  <div class="container">
+    <div class="categories" id="categories"></div>
+    <div class="products" id="products"></div>
   </div>
 
-  <!-- jQuery and Bootstrap Bundle JS -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Cart Drawer -->
+  <div id="cartDrawer">
+    <h2>Your Cart</h2>
+    <div id="cartItems"></div>
+    <h3 id="cartTotal">Total: $0</h3>
+    <button id="checkoutBtn">Checkout</button>
+  </div>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeAuth()">&times;</span>
+      <h2 id="authTitle">Sign In</h2>
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button onclick="submitAuth()" id="authSubmitBtn">Sign In</button>
+      <p style="font-size:0.9rem;">Don't have an account? 
+        <a href="#" onclick="toggleAuthMode(event)">Sign Up</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Product List with categories
+    const products = [
+      { id:1, title:"Men's T-Shirt", price:25, img:"https://via.placeholder.com/200?text=Men+T-Shirt", category:"Men" },
+      { id:2, title:"Men's Jeans", price:40, img:"https://via.placeholder.com/200?text=Men+Jeans", category:"Men" },
+      { id:3, title:"Women's Dress", price:55, img:"https://via.placeholder.com/200?text=Women+Dress", category:"Women" },
+      { id:4, title:"Women's Handbag", price:70, img:"https://via.placeholder.com/200?text=Handbag", category:"Women" },
+      { id:5, title:"Kids' Toy Car", price:15, img:"https://via.placeholder.com/200?text=Toy+Car", category:"Kids" },
+      { id:6, title:"Kids' T-Shirt", price:20, img:"https://via.placeholder.com/200?text=Kids+T-Shirt", category:"Kids" },
+      { id:7, title:"Mixer Grinder", price:120, img:"https://via.placeholder.com/200?text=Mixer+Grinder", category:"Kitchen" },
+      { id:8, title:"Cooking Pan", price:35, img:"https://via.placeholder.com/200?text=Cooking+Pan", category:"Kitchen" },
+      { id:9, title:"Smartphone", price:499, img:"https://via.placeholder.com/200?text=Smartphone", category:"Electronics" },
+      { id:10, title:"Laptop", price:899, img:"https://via.placeholder.com/200?text=Laptop", category:"Electronics" }
+    ];
+
+    const categories = ["All","Men","Women","Kids","Kitchen","Electronics"];
+    const categoriesDiv = document.getElementById("categories");
+    const productsDiv = document.getElementById("products");
+    const cartDrawer = document.getElementById("cartDrawer");
+    const cartItemsDiv = document.getElementById("cartItems");
+    const cartTotal = document.getElementById("cartTotal");
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Render categories
+    function renderCategories(){
+      categoriesDiv.innerHTML = categories.map((cat,i)=>
+        `<button onclick="filterCategory('${cat}')" class="${i===0?'active':''}">${cat}</button>`
+      ).join("");
+    }
+
+    // Render products
+    function renderProducts(filter="All"){
+      let filtered = filter==="All"?products:products.filter(p=>p.category===filter);
+      productsDiv.innerHTML = filtered.map(p => `
+        <div class="product">
+          <img src="${p.img}" alt="${p.title}">
+          <h3>${p.title}</h3>
+          <p>$${p.price}</p>
+          <button onclick="addToCart(${p.id})">Add to Cart</button>
+        </div>
+      `).join("");
+      document.querySelectorAll(".categories button").forEach(btn=>{
+        btn.classList.toggle("active", btn.textContent===filter);
+      });
+    }
+
+    // Cart
+    function renderCart(){
+      cartItemsDiv.innerHTML = cart.map((item,i)=>`
+        <div class="cart-item">
+          <span>${item.title} x${item.qty}</span>
+          <div>
+            <button onclick="updateQty(${i}, -1)">-</button>
+            <button onclick="updateQty(${i}, 1)">+</button>
+            <button onclick="removeItem(${i})">x</button>
+          </div>
+        </div>
+      `).join("");
+      let total = cart.reduce((sum,it)=>sum+it.price*it.qty,0);
+      cartTotal.innerText = `Total: $${total}`;
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+    function addToCart(id){
+      let product = products.find(p=>p.id===id);
+      let existing = cart.find(c=>c.id===id);
+      if(existing) existing.qty++;
+      else cart.push({...product, qty:1});
+      renderCart();
+    }
+    function updateQty(i,change){
+      cart[i].qty+=change;
+      if(cart[i].qty<=0) cart.splice(i,1);
+      renderCart();
+    }
+    function removeItem(i){ cart.splice(i,1); renderCart(); }
+    function toggleCart(){ cartDrawer.classList.toggle("open"); }
+    document.getElementById("checkoutBtn").onclick=()=>alert("Proceeding to checkout...");
+
+    // Auth
+    const authModal = document.getElementById("authModal");
+    const authBtn = document.getElementById("authBtn");
+    const authTitle = document.getElementById("authTitle");
+    const authSubmitBtn = document.getElementById("authSubmitBtn");
+    const userDisplay = document.getElementById("userDisplay");
+    let isSignIn = true;
+    authBtn.onclick = ()=>{ authModal.style.display="flex"; };
+    function closeAuth(){ authModal.style.display="none"; }
+    function toggleAuthMode(e){
+      e.preventDefault();
+      isSignIn = !isSignIn;
+      authTitle.innerText = isSignIn?"Sign In":"Sign Up";
+      authSubmitBtn.innerText = isSignIn?"Sign In":"Sign Up";
+    }
+    function submitAuth(){
+      const username=document.getElementById("username").value;
+      const email=document.getElementById("email").value;
+      const password=document.getElementById("password").value;
+      if(!username||!email||!password){ alert("Fill all fields"); return; }
+      if(isSignIn){
+        let storedUser = JSON.parse(localStorage.getItem("user"));
+        if(storedUser && storedUser.email===email && storedUser.password===password){
+          alert("Welcome back, "+storedUser.username);
+          setSession(storedUser);
+          closeAuth();
+        } else { alert("Invalid credentials"); }
+      } else {
+        let newUser = {username,email,password};
+        localStorage.setItem("user", JSON.stringify(newUser));
+        alert("Account created! Please Sign In");
+        toggleAuthMode(new Event("click"));
+      }
+    }
+    function setSession(user){
+      localStorage.setItem("session", JSON.stringify(user));
+      userDisplay.innerText = "Hello, "+user.username;
+      authBtn.innerText = "Logout";
+      authBtn.onclick = logout;
+    }
+    function logout(){
+      localStorage.removeItem("session");
+      userDisplay.innerText = "";
+      authBtn.innerText = "Sign In / Sign Up";
+      authBtn.onclick = ()=>{ authModal.style.display="flex"; };
+    }
+
+    // Init
+    function filterCategory(cat){ renderProducts(cat); }
+    window.onload = ()=>{
+      renderCategories();
+      renderProducts();
+      renderCart();
+      let sessionUser = JSON.parse(localStorage.getItem("session"));
+      if(sessionUser) setSession(sessionUser);
+    }
+  </script>
 </body>
 </html>
